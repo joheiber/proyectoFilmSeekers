@@ -18,7 +18,7 @@ $(document).ready(() => {
       .then(res => res.json())
       .then(res => {
         peliculas = res.results
-        console.log(peliculas)
+        $("#tableroPeliculas").empty()
         peliculas.forEach((pelicula) => {
           $("#tableroPeliculas").append(`
             <div class="card my-1" style="width: 18rem;">
@@ -30,7 +30,6 @@ $(document).ready(() => {
 </div>
             `);
         })
-        // $("#tableroPeliculas").
       })
       .catch(err => console.error(err));
   });
