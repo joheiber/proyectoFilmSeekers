@@ -1,0 +1,23 @@
+:root{
+  /* Colores principales */
+  --oxford-blue-1: #0F1330;
+  --oxford-blue-2: #1B263B;
+  --electric-violet: #8E00F3;
+  --timberwolf: #D3D3D3;
+  --white: #FFFFFF;
+  --black: #000000;
+
+  /* Otros posibles usos */
+  --primary-bg: var(--oxford-blue-1);
+  --secondary-bg: var(--oxford-blue-2);
+  --primary-text: var(--white);
+  --secondary-text: var(--timberwolf);
+  --accent-color: var(--electric-violet);
+  --border-color: var(--black);
+}
+body{
+  background-color: var(--oxford-blue-2);
+}
+nav{
+  background-color: var(--oxford-blue-1);
+}
