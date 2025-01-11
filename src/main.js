@@ -1,8 +1,36 @@
 import './style.css'
 
 $(document).ready(() => {
+  const generos = {
+    28: "Acción",
+    12: "Aventura",
+    16: "Animación",
+    35: "Comedia",
+    80: "Crimen",
+    99: "Documental",
+    18: "Drama",
+    10751: "Familiar",
+    14: "Fantasía",
+    36: "Historia",
+    27: "Terror",
+    10402: "Música",
+    9648: "Misterio",
+    10749: "Romance",
+    878: "Ciencia ficción",
+    10770: "Película de TV",
+    53: "Suspense",
+    10752: "Bélica",
+    37: "Western"
+  };
+  
+  function obtenerGeneros(ids) {
+    return ids
+      .map(id => `<span class="badge bg-secondary me-1">${generos[id]}</span>`)
+      .join(""); // Esto une todas las píldoras sin separadores
+  }
 
   $("#inputBusqueda").on("input", function () {
+
     const valor = $(this).val();
 
     const options = {
@@ -36,6 +64,7 @@ $(document).ready(() => {
                       <h3 class="card-title" >${pelicula.title}</h3>
                       <h6 class="card-subtitle mb-2">${pelicula.release_date}</h6>
                       <p class="card-text">${overview}</p>
+                      <p class="card-text">${obtenerGeneros(pelicula.genre_ids)}</p>
                     </div>
                   </div>
               </div>
