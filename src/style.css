@@ -15,9 +15,16 @@
   --accent-color: var(--electric-violet);
   --border-color: var(--black);
 }
+
 body{
   background-color: var(--oxford-blue-2);
 }
 nav{
   background-color: var(--oxford-blue-1);
+}
+.card-title{
+ color: var(--electric-violet) !important;
+}
+.card{
+  background-color: var(--oxford-blue-1) !important;
 }
