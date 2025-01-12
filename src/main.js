@@ -77,7 +77,6 @@ $(document).ready(() => {
               loading = true; // No permite más cargas
             } else {
               loading = false;
-              page++; // Sube la página para la próxima carga
             }
         })
       })
@@ -90,6 +89,7 @@ $(document).ready(() => {
     const valor = $(this).val();
     $("#tableroPeliculas").empty()
     loading = false;
+    page=1
     cargarPeliculas(valor)
   });
 
@@ -97,6 +97,7 @@ $(document).ready(() => {
 
     if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
       const query = $("#inputBusqueda").val();
+      page++;
       cargarPeliculas(query);
     }
   });
