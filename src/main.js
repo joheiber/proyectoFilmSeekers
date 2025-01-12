@@ -22,16 +22,21 @@ $(document).ready(() => {
     10752: "Bélica",
     37: "Western"
   };
-  
+  let page = 1;
+  let loading = false; 
+
   function obtenerGeneros(ids) {
     return ids
       .map(id => `<span class="badge bg-secondary me-1">${generos[id]}</span>`)
       .join(""); // Esto une todas las píldoras sin separadores
   }
 
-  $("#inputBusqueda").on("input", function () {
 
-    const valor = $(this).val();
+  function cargarPeliculas(valorBusqueda = "") {
+    let peliculas
+
+    if (loading) return; // Si ya está cargando, no vuelve a llamar
+    loading = true;
 
     const options = {
       method: 'GET',
@@ -40,14 +45,11 @@ $(document).ready(() => {
         Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDdhZmZiYjYzNGZlMzFjMjFlMjY5ZDEwZTg4MzRkZSIsIm5iZiI6MTczMjA1MzM4NS4zMTAwMDAyLCJzdWIiOiI2NzNkMDk4OTI0ODViODViM2NhOGU5YWQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.RBeg3DLGhEjsTJAWtAql3m1fGJ6TAxgPFynNdnDY1pQ'
       }
     };
-    let peliculas
-    fetch(`https://api.themoviedb.org/3/search/movie?query=${valor}&include_adult=false&language=es&page=1`, options)
+
+    fetch(`https://api.themoviedb.org/3/search/movie?query=${valorBusqueda}&include_adult=false&language=es&page=${page}`, options)
       .then(res => res.json())
       .then(res => {
         peliculas = res.results
-        console.log(peliculas)
-
-        $("#tableroPeliculas").empty()
 
         peliculas.forEach((pelicula) => {
           let overview = pelicula.overview.length > 150
@@ -71,9 +73,31 @@ $(document).ready(() => {
             </div>
       
             `);
+            if (res.page >= res.total_pages) {
+              loading = true; // No permite más cargas
+            } else {
+              loading = false;
+              page++; // Sube la página para la próxima carga
+            }
         })
       })
       .catch(err => console.error(err));
+
+  }
+
+
+  $("#inputBusqueda").on("input", function () {
+    const valor = $(this).val();
+    $("#tableroPeliculas").empty()
+    loading = false;
+    cargarPeliculas(valor)
   });
 
+  $(window).on("scroll", function () {
+
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+      const query = $("#inputBusqueda").val();
+      cargarPeliculas(query);
+    }
+  });
 })
