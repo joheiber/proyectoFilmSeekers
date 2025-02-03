@@ -31,6 +31,13 @@ $(document).ready(() => {
       .join(""); // Esto une todas las píldoras sin separadores
   }
 
+  function obtenerClaseBootstrap(puntaje) {
+    if (puntaje >= 7) return "bg-success";  // Verde
+    if (puntaje >= 4) return "bg-warning"; // Amarillo
+    if (puntaje > 0) return "bg-danger";   // Rojo
+    return "bg-secondary";                 // Gris para sin calificación
+  }
+
 
   function cargarPeliculas(valorBusqueda = "") {
     let peliculas
@@ -50,11 +57,14 @@ $(document).ready(() => {
       .then(res => res.json())
       .then(res => {
         peliculas = res.results
-
         peliculas.forEach((pelicula) => {
+
           let overview = pelicula.overview.length > 150
             ? pelicula.overview.substring(0, 150) + "..."
             : pelicula.overview;
+          const calificacion = pelicula.vote_average > 10 ? "10+" : pelicula.vote_average.toFixed(1);
+          const claseCalificacion = obtenerClaseBootstrap(calificacion);
+            
           $("#tableroPeliculas").append(`
             <div class="card my-1 card text-bg-dark " style="max-width: 540px;" >
             <div class="row g-0">
@@ -66,6 +76,7 @@ $(document).ready(() => {
                       <h3 class="card-title" >${pelicula.title}</h3>
                       <h6 class="card-subtitle mb-2">${pelicula.release_date}</h6>
                       <p class="card-text">${overview}</p>
+                      <span class="badge rounded-pill ${claseCalificacion} text-light px-3 py-2"> ${calificacion}</span>
                       <p class="card-text">${obtenerGeneros(pelicula.genre_ids)}</p>
                     </div>
                   </div>
@@ -74,7 +85,7 @@ $(document).ready(() => {
       
             `);
             if (res.page >= res.total_pages) {
-              loading = true; // No permite más cargas
+              loading = true;
             } else {
               loading = false;
             }
